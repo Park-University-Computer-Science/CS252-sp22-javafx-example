@@ -2,17 +2,23 @@ import javafx.application.Application;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
 import java.io.*;
 
+/** a simple note taking application */
 public class Main extends Application {
+
+    // TODO: add menu items for loading/saving
+    // TODO: add file dialog for loading/saving specific file
+
+    // area for writing / displaying notes
+    private TextArea noteTakingArea = new TextArea("Enter notes here...");
+    private Button saveNote = new Button("Save");   // save notes
+    private Button loadNote = new Button("Load");   // load saved notes
 
     /** Set up a maven run profile in intellij or use maven from the command-line.
         Use the javafx:run argument to start the javafx application.
@@ -20,30 +26,12 @@ public class Main extends Application {
      */
     @Override
     public void start(Stage stage) {
-        Label l = new Label("CS252 JavaFX Starter Template");
+        saveNote.setDisable(true);                  // disable save button when no changes to be saved
 
-        Button saveNote = new Button("Save");
-        Button loadNote = new Button("Load");
-        saveNote.setDisable(true);
-
-        TextArea noteTakingArea = new TextArea("Enter notes here...");
-
-
-        BorderPane windowLayout = new BorderPane();
-        HBox bottomButtonPanel = new HBox();
-
-        /*
-        StackPane p = new StackPane();
-        p.getChildren().add(saveNote);
-        p.setAlignment(saveNote, Pos.CENTER);
-        */
-        windowLayout.setBottom(bottomButtonPanel);
-        windowLayout.setCenter(noteTakingArea);
-
-        bottomButtonPanel.getChildren().add(loadNote);
-        bottomButtonPanel.getChildren().add(saveNote);
-
+        // enable save button when changes made to textarea
         noteTakingArea.setOnKeyTyped(e -> saveNote.setDisable(false));
+
+        // save notes action
         saveNote.setOnAction(e -> {
             File saveFile = new File("savedNote.txt");
             try {
@@ -56,6 +44,8 @@ public class Main extends Application {
             System.out.println(noteTakingArea.getText());
             saveNote.setDisable(true);
         });
+
+        // load notes action
         loadNote.setOnAction(e -> {
             try {
                 File saveFile = new File("savedNote.txt");
@@ -70,6 +60,17 @@ public class Main extends Application {
         });
 
 
+        BorderPane windowLayout = new BorderPane();  // root window layout
+        HBox bottomButtonPanel = new HBox();         // pane to hold buttons
+        bottomButtonPanel.setAlignment(Pos.CENTER);  // center the buttons
+        windowLayout.setBottom(bottomButtonPanel);   // put buttons at bottom of window
+        windowLayout.setCenter(noteTakingArea);      // place note editing area in center
+
+        // add buttons to button pane
+        bottomButtonPanel.getChildren().add(loadNote);
+        bottomButtonPanel.getChildren().add(saveNote);
+
+        // add root pane to window scene
         Scene scene = new Scene(windowLayout);
         stage.setScene(scene);
         stage.show();
