@@ -1,6 +1,7 @@
 import javafx.application.Application;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.BorderPane;
@@ -14,7 +15,6 @@ import java.io.*;
 public class Main extends Application {
 
     // TODO: add menu items for loading/saving
-    // TODO: add file dialog for loading/saving specific file
     // TODO: add an error dialog for bad file selection, io problem
 
     // area for writing / displaying notes
@@ -40,14 +40,17 @@ public class Main extends Application {
             fc.setTitle("Select a save file for the note");
             saveFile = fc.showSaveDialog(stage);
             try {
+                if(saveFile == null) throw new IOException();
                 PrintWriter fout = new PrintWriter(new FileWriter(saveFile));
                 fout.print(noteTakingArea.getText());
                 fout.close();
+                saveNote.setDisable(true);
             } catch(IOException err) {
-                System.out.println("ERROR: could not save file");
+                Alert dialog = new Alert(Alert.AlertType.ERROR);
+                dialog.setTitle("Error");
+                dialog.setContentText("Could not save note to file: " + saveFile);
+                dialog.showAndWait();
             }
-            System.out.println(noteTakingArea.getText());
-            saveNote.setDisable(true);
         });
 
         // load notes action
