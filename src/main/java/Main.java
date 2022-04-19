@@ -1,9 +1,7 @@
 import javafx.application.Application;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.TextArea;
+import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.FileChooser;
@@ -15,12 +13,13 @@ import java.io.*;
 public class Main extends Application {
 
     // TODO: add menu items for loading/saving
-    // TODO: add an error dialog for bad file selection, io problem
 
     // area for writing / displaying notes
     private TextArea noteTakingArea = new TextArea("Enter notes here...");
     private Button saveNote = new Button("Save");   // save notes
     private Button loadNote = new Button("Load");   // load saved notes
+
+
 
     /** Set up a maven run profile in intellij or use maven from the command-line.
         Use the javafx:run argument to start the javafx application.
@@ -73,6 +72,25 @@ public class Main extends Application {
         bottomButtonPanel.setAlignment(Pos.CENTER);  // center the buttons
         windowLayout.setBottom(bottomButtonPanel);   // put buttons at bottom of window
         windowLayout.setCenter(noteTakingArea);      // place note editing area in center
+
+
+        // create menu
+        Menu fileMenu = new Menu("File");
+        MenuItem loadMenuOption = new MenuItem("Load");
+        MenuItem saveMenuOption = new MenuItem("Save");
+        MenuItem aboutMenuOption = new MenuItem("About");
+        aboutMenuOption.setOnAction(e -> {
+            var aboutScreen = new Alert(Alert.AlertType.INFORMATION);
+            aboutScreen.setTitle("About NoteTakingApp");
+            aboutScreen.setContentText("Example JavaFX application for CS252");
+            aboutScreen.showAndWait();
+        });
+        fileMenu.getItems().add(loadMenuOption);
+        fileMenu.getItems().add(saveMenuOption);
+        Menu helpMenu = new Menu("Help");
+        helpMenu.getItems().add(aboutMenuOption);
+        MenuBar menu = new MenuBar(fileMenu, helpMenu);
+        windowLayout.setTop(menu);
 
         // add buttons to button pane
         bottomButtonPanel.getChildren().add(loadNote);
