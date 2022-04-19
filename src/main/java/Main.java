@@ -14,6 +14,7 @@ public class Main extends Application {
 
     // TODO: add menu items for loading/saving
     // TODO: add file dialog for loading/saving specific file
+    // TODO: add an error dialog for bad file selection, io problem
 
     // area for writing / displaying notes
     private TextArea noteTakingArea = new TextArea("Enter notes here...");
@@ -29,7 +30,7 @@ public class Main extends Application {
         saveNote.setDisable(true);                  // disable save button when no changes to be saved
 
         // enable save button when changes made to textarea
-        noteTakingArea.setOnKeyTyped(e -> saveNote.setDisable(false));
+        noteTakingArea.textProperty().addListener(e -> saveNote.setDisable(false));
 
         // save notes action
         saveNote.setOnAction(e -> {
