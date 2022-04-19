@@ -5,6 +5,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 import java.io.*;
@@ -34,7 +35,10 @@ public class Main extends Application {
 
         // save notes action
         saveNote.setOnAction(e -> {
-            File saveFile = new File("savedNote.txt");
+            File saveFile = null;
+            FileChooser fc = new FileChooser();
+            fc.setTitle("Select a save file for the note");
+            saveFile = fc.showSaveDialog(stage);
             try {
                 PrintWriter fout = new PrintWriter(new FileWriter(saveFile));
                 fout.print(noteTakingArea.getText());
