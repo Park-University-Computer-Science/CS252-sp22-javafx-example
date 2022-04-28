@@ -2,12 +2,15 @@ import javafx.application.Application;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 import java.io.*;
+import java.net.URL;
 
 /** a simple note taking application */
 public class Main extends Application {
@@ -90,6 +93,16 @@ public class Main extends Application {
         saveNote.setDisable(true);
         saveMenuOption.setDisable(true);
 
+        // load park logo
+        ImageView logoView = null;
+        try {
+            URL url = getClass().getResource("/park.jpg");
+            Image logo = new Image(url.openStream());
+            logoView = new ImageView(logo);
+        } catch (IOException e) {
+            System.out.println("Error -- could not load logo");
+        }
+
         // set action listeners
         noteTakingArea.textProperty().addListener(e -> {
             saveNote.setDisable(false);
@@ -125,6 +138,7 @@ public class Main extends Application {
         windowLayout.setBottom(bottomButtonPanel);   // put buttons at bottom of window
         windowLayout.setCenter(noteTakingArea);      // place note editing area in center
         windowLayout.setTop(menu);
+        windowLayout.setBottom(logoView);
 
         // add root pane to window scene
         Scene scene = new Scene(windowLayout);
